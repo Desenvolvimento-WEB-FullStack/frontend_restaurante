@@ -1,21 +1,42 @@
-// MODO ANTIGO import "./Login.module.css";
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import axios from "axios";
+import Swal from "sweetalert2";
+
 import styles from "./Login.module.css"; // MODO novo com CSS modules
 import stylesIndex from "../../index.module.css";
-import { useState } from "react";
-import axios from "axios";
 
 function Login() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   // Função que vai na api validar se usuario existe
-  function fazerLogin(event) {
-    event.preventDefault();
 
-    axios.post("http://localhost:8888/auth/login", {
-      email: email,
-      senha: password,
-    });
+  async function fazerLogin(event: React.SubmitEvent) {
+    try {
+      event.preventDefault();
+
+      await axios.post("http://localhost:8888/auth/login", {
+        email: email,
+        senha: password,
+      });
+
+      Swal.fire({
+        title: "Login realizado com sucesso",
+        icon: "success",
+      });
+
+      navigate("/mesas");
+    } catch (error) {
+      Swal.fire({
+        title: error.response.data.error,
+        icon: "error",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }
   }
 
   return (
@@ -30,6 +51,7 @@ function Login() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
       </div>
 
@@ -40,6 +62,7 @@ function Login() {
           placeholder="******"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         ></input>
       </div>
 
