@@ -18,10 +18,12 @@ function Login() {
     try {
       event.preventDefault();
 
-      await axios.post("http://localhost:8888/auth/login", {
+      const response = await axios.post("http://localhost:8888/auth/login", {
         email: email,
         senha: password,
       });
+
+      console.log(response.data);
 
       Swal.fire({
         title: "Login realizado com sucesso",
