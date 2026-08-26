@@ -23,7 +23,8 @@ function Login() {
         senha: password,
       });
 
-      console.log(response.data);
+      // Salva o token no local storage para usarmos depois
+      localStorage.setItem("@dadoslogin", JSON.stringify(response.data));
 
       Swal.fire({
         title: "Login realizado com sucesso",
