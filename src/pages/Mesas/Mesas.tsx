@@ -1,4 +1,3 @@
-import { FaDoorOpen } from "react-icons/fa";
 import styles from "./Mesas.module.css";
 import { GiWoodenChair } from "react-icons/gi";
 import { useEffect, useState } from "react";
@@ -77,29 +76,12 @@ function Mesas() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     buscarMesas();
   }, []); // Deve executar durante a renderização inicial da tela
 
   return (
     <div>
-      <div className={styles.containerMenu}>
-        <div className={styles.contentLeft}>
-          <span className={styles.logoMenu}>🍽️</span>
-          <h1>Sabor & Arte</h1>
-          <ul>
-            <li>Mesas</li>
-            <li>Pedidos</li>
-          </ul>
-        </div>
-
-        <div className={styles.contentRight}>
-          <span>{dadosLocalStorage.role}</span>
-          <span>
-            <FaDoorOpen />
-          </span>
-        </div>
-      </div>
-
       <h2>Mesas</h2>
       <p>Selecione uma mesa para abrir ou acompanhar o pedido</p>
 
