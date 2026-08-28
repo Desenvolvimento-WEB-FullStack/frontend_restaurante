@@ -9,15 +9,19 @@ import Pedidos from "./pages/Pedidos/Pedidos";
 
 import "./styles/reset.css";
 import "./index.module.css";
+import Chefs from "./pages/Chefs/Chefs";
+import Menu from "./components/Menu/Menu";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
+      <Menu />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/mesas" element={<Mesas />} />
         <Route path="/pedido-items" element={<PedidosItems />} />
         <Route path="/pedidos" element={<Pedidos />} />
+        <Route path="/chefes" element={<Chefs />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

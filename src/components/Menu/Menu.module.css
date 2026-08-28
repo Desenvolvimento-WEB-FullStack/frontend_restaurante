@@ -1,0 +1,39 @@
+.containerMenu {
+  width: 100%;
+  padding: 5px;
+  height: 48px;
+  background-color: #fff;
+  gap: 10px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.containerMenu h1 {
+  font-size: 32px;
+  font-weight: bold;
+  color: #8f4219;
+}
+
+.logoMenu {
+  font-size: 32px;
+}
+
+.contentLeft {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.contentLeft ul {
+  display: flex;
+  gap: 10px;
+  font-size: 18px;
+  align-items: center;
+  height: 32px;
+}
+
+.contentRight {
+  display: flex;
+  gap: 20px;
+}
