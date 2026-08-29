@@ -5,9 +5,12 @@ import Swal from "sweetalert2";
 
 import styles from "./Login.module.css"; // MODO novo com CSS modules
 import stylesIndex from "../../index.module.css";
+import Loading from "../../components/Loading/Loading";
 
 function Login() {
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,6 +20,11 @@ function Login() {
   async function fazerLogin(event: React.SubmitEvent) {
     try {
       event.preventDefault();
+
+      setLoading(true);
+
+      // atrasar de intencional 2 segundos a execucao da próxima
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       const response = await axios.post("http://localhost:8888/auth/login", {
         email: email,
@@ -33,6 +41,7 @@ function Login() {
 
       navigate("/mesas");
     } catch (error) {
+      setLoading(false);
       Swal.fire({
         title: error.response.data.error,
         icon: "error",
@@ -54,6 +63,7 @@ function Login() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          placeholder="seuemail@restaurante.com"
           required
         />
       </div>
@@ -69,7 +79,9 @@ function Login() {
         ></input>
       </div>
 
-      <button type="submit">Entrar</button>
+      <button className={styles.buttonLogin} type="submit">
+        {loading ? <Loading /> : "Entrar"}
+      </button>
     </form>
   );
 }
