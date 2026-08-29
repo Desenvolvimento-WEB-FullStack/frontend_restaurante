@@ -1,29 +1,57 @@
+/* Estilo aplicado ao quadrado branco que envolve todo o formulário de login */
 .container {
   background: #fff;
-  width: 400px;
+
+  max-width: 400px;
   border-radius: 16px;
   margin: 60px auto;
-  height: 500px;
 
-  padding: 10px;
+  padding: 40px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+
   gap: 10px;
 }
 
 .logo {
-  font-size: 64px;
+  font-size: 46px;
 }
 
 .nome {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: bold;
   color: #8f4219;
 }
 
 .subTitulo {
-  font-size: 18px;
+  font-size: 16px;
   color: #77695c;
+  margin-bottom: 20px;
+}
+
+.buttonLogin {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  background-color: #8f4219;
+  height: 38px;
+  border-radius: 12px;
+  color: #fff;
+  border: 1px solid #8f4219;
+  margin-top: 25px;
+  cursor: pointer;
+  transition: transform 0.1s ease, background-color 0.1s ease;
+}
+
+.buttonLogin:active {
+  transform: scale(0.96);
+  background-color: #723416;
+}
+
+@media (max-width: 400px) {
+  .container {
+    margin: 60px 20px;
+  }
 }
