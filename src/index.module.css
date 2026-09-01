@@ -1,3 +1,13 @@
+:root {
+  --color-primary: #8f4219;
+  --color-primary-dark: #723416;
+  --color-background: #f4ece3;
+  --color-white: #fff;
+  --color-text-muted: #7b6e62;
+  --color-text-secondary: #77695c;
+  --color-border: #e8e2d8;
+}
+
 body {
   background: #f4ece3;
 }

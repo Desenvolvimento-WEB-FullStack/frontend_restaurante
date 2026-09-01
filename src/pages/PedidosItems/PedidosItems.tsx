@@ -1,6 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { getDataLocalStorage } from "../../utils/getDataLocalStorage";
+import { FaArrowLeft } from "react-icons/fa";
+import styles from "./PedidosItems.module.css";
+import Item from "./Item";
 
 const dadosLocalStorage = getDataLocalStorage();
 
@@ -37,17 +40,26 @@ function PedidosItems() {
   }, []); // Deve executar durante a renderização inicial do componente, ou seja, quando o componente for montado na tela.
 
   return (
-    <div>
-      {itemsCardapio.map((item) => (
-        <div key={item.id}>
-          <div>
-            <ul>
-              <li>Nome: {item.nome}</li>
-              <li>Preço: {item.preco}</li>
-            </ul>
-          </div>
+    <div className={styles.container}>
+      <div className={styles.backTextContainer}>
+        <FaArrowLeft color="#CCC" />
+        <span className={styles.backText}>Voltar para mesas</span>
+      </div>
+
+      <div className={styles.headerContainer}>
+        <div>
+          <h2>Mesa 01</h2>
+          <span>Cliente: Joao da Silva</span>
         </div>
-      ))}
+        <span>Pedido em aberto</span>
+      </div>
+
+      <div className={styles.itemsContainer}>
+        <h3>Cardápio</h3>
+        {itemsCardapio.map((item) => (
+          <Item item={item} />
+        ))}
+      </div>
     </div>
   );
 }
