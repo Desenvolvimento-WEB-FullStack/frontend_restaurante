@@ -23,6 +23,7 @@ type Mesa = {
   reservado: boolean;
   criado_em: string;
   atualizado_em: string;
+  pedido_atual_id: number;
 };
 
 function Mesas() {
@@ -45,7 +46,7 @@ function Mesas() {
     try {
       event.preventDefault();
 
-      await axios.post(
+      const response = await axios.post(
         "http://localhost:8888/pedidos",
         {
           mesa_id: mesaClicada?.id,
@@ -59,7 +60,7 @@ function Mesas() {
         },
       );
 
-      navigate("/pedido-items");
+      navigate(`/pedido-items/${response.data.id}`);
     } catch {
       alert("Erro ao criar pedido");
     }
@@ -73,6 +74,10 @@ function Mesas() {
     });
 
     setMesas(response.data);
+  }
+
+  function visualizarCardapio(mesa: Mesa) {
+    navigate(`/pedido-items/${mesa.pedido_atual_id}`);
   }
 
   useEffect(() => {
@@ -90,7 +95,11 @@ function Mesas() {
           <div
             className={styles.chair}
             key={mesa.id}
-            onClick={() => abrirModal(mesa)}
+            onClick={
+              mesa.pedido_atual_id === null
+                ? () => abrirModal(mesa)
+                : () => visualizarCardapio(mesa)
+            }
           >
             {mesa.nome}
             <div className={styles.chairHeader}>

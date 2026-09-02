@@ -4,6 +4,7 @@ import { getDataLocalStorage } from "../../utils/getDataLocalStorage";
 import { FaArrowLeft } from "react-icons/fa";
 import styles from "./PedidosItems.module.css";
 import Item from "./Item";
+import { useParams } from "react-router";
 
 const dadosLocalStorage = getDataLocalStorage();
 
@@ -21,7 +22,22 @@ type ItemCardapio = {
 };
 
 function PedidosItems() {
+  const params = useParams();
+
   const [itemsCardapio, setItemsCardapio] = useState<ItemCardapio[]>([]);
+  const [dadosPedido, setDadosPedido] = useState(null);
+
+  async function buscarDadosPedidoAtual() {
+    const response = await axios.get(
+      `http://localhost:8888/pedidos/${params.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${dadosLocalStorage.token}`,
+        },
+      },
+    );
+    setDadosPedido(response.data);
+  }
 
   async function buscaItemsCardapio() {
     const response = await axios.get<ItemCardapio[]>(
@@ -37,6 +53,7 @@ function PedidosItems() {
 
   useEffect(() => {
     buscaItemsCardapio();
+    buscarDadosPedidoAtual();
   }, []); // Deve executar durante a renderização inicial do componente, ou seja, quando o componente for montado na tela.
 
   return (
@@ -48,16 +65,16 @@ function PedidosItems() {
 
       <div className={styles.headerContainer}>
         <div>
-          <h2>Mesa 01</h2>
-          <span>Cliente: Joao da Silva</span>
+          <h2>Mesa {dadosPedido?.mesa?.nome}</h2>
+          <span>Cliente: {dadosPedido?.nome_cliente}</span>
         </div>
-        <span>Pedido em aberto</span>
+        <span>Pedido em {dadosPedido?.fechado ? "Fechado" : "Aberto"}</span>
       </div>
 
       <div className={styles.itemsContainer}>
         <h3>Cardápio</h3>
         {itemsCardapio.map((item) => (
-          <Item item={item} />
+          <Item item={item} key={item.id} />
         ))}
       </div>
     </div>
