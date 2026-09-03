@@ -12,6 +12,7 @@ restaurante/
 │   │   ├── Loading/          # spinner de carregamento (usado no botão de login)
 │   │   └── Menu/             # menu de navegação lateral/topo (Mesas/Pedidos/Chefes + logout)
 │   ├── pages/                # uma pasta por rota/tela
+│   │   ├── CadastroMesa/     # formulário de cadastro de mesa
 │   │   ├── Chefs/            # quadro de chefs (tabela MUI)
 │   │   ├── Login/            # tela de login
 │   │   ├── Mesas/            # grade de mesas + modal de abertura de pedido

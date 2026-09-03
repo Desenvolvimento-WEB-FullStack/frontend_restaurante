@@ -24,6 +24,7 @@ headers: { Authorization: `Bearen ${dadosLocalStorage.token}` }
 |---|---|---|---|---|
 | `POST` | `/auth/login` | `Login.tsx` | não | Body `{ email, senha }`. Resposta salva inteira em `localStorage["@dadoslogin"]`. |
 | `GET` | `/mesas` | `Mesas.tsx` | sim | Retorna `Mesa[]`. |
+| `POST` | `/mesas` | `CadastroMesa.tsx` | sim | Body `{ nome, quantidade_lugares }`. Cadastra uma nova mesa. |
 | `POST` | `/pedidos` | `Mesas.tsx` | sim | Body `{ mesa_id, nome_cliente, data }`. **`data` é fixa em `"2026-08-26"`** (hardcoded, não usa a data atual). Retorna o pedido criado (`id` usado para navegar). |
 | `GET` | `/pedidos/:id` | `PedidosItems.tsx` | sim | Retorna `DadosPedido` (inclui `mesa`, `items[]`, `subTotal`). |
 | `GET` | `/items-cardapio` | `PedidosItems.tsx` | sim | Retorna `ItemCardapio[]`. |
