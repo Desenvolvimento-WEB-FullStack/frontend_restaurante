@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 
 import stylesIndex from "../../index.module.css";
+import Header from "../../components/Header/Header";
 
 const dadosLocalStorage = getDataLocalStorage();
 
@@ -23,6 +24,7 @@ type Mesa = {
   reservado: boolean;
   criado_em: string;
   atualizado_em: string;
+  pedido_atual_id: number;
 };
 
 function Mesas() {
@@ -45,7 +47,7 @@ function Mesas() {
     try {
       event.preventDefault();
 
-      await axios.post(
+      const response = await axios.post(
         "http://localhost:8888/pedidos",
         {
           mesa_id: mesaClicada?.id,
@@ -59,7 +61,7 @@ function Mesas() {
         },
       );
 
-      navigate("/pedido-items");
+      navigate(`/pedido-items/${response.data.id}`);
     } catch {
       alert("Erro ao criar pedido");
     }
@@ -75,6 +77,10 @@ function Mesas() {
     setMesas(response.data);
   }
 
+  function visualizarCardapio(mesa: Mesa) {
+    navigate(`/pedido-items/${mesa.pedido_atual_id}`);
+  }
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     buscarMesas();
@@ -82,15 +88,21 @@ function Mesas() {
 
   return (
     <div>
-      <h2>Mesas</h2>
-      <p>Selecione uma mesa para abrir ou acompanhar o pedido</p>
+      <Header
+        title="Mesas"
+        description="Selecione uma mesa para abrir ou acompanhar o pedido"
+      />
 
       <div className={styles.containerChairs}>
         {mesas.map((mesa) => (
           <div
             className={styles.chair}
             key={mesa.id}
-            onClick={() => abrirModal(mesa)}
+            onClick={
+              mesa.pedido_atual_id === null
+                ? () => abrirModal(mesa)
+                : () => visualizarCardapio(mesa)
+            }
           >
             {mesa.nome}
             <div className={styles.chairHeader}>
