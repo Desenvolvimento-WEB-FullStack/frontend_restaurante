@@ -62,3 +62,37 @@
   flex-direction: column;
   gap: 5px;
 }
+
+.contentContainer {
+  display: flex;
+  gap: 20px;
+}
+
+.resumeContainer {
+  width: 40%;
+}
+
+.resumeListContainer {
+  padding: 20px;
+  background: #fff;
+  min-height: auto;
+}
+
+.resumeListContainer h3 {
+  font-size: 18px;
+  color: var(--color-primary);
+  margin-bottom: 20px;
+}
+
+.resumeListContainer ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-bottom: 1px solid var(--color-primary-dark);
+  padding-bottom: 15px;
+}
+
+.resumeListContainer ul li {
+  display: flex;
+  justify-content: space-between;
+}

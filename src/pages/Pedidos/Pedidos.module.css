@@ -1,0 +1,46 @@
+.itemsContainer {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.itemPedido {
+  background-color: #fff;
+  width: 350px;
+  border-radius: 16px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 600px) {
+  .itemPedido {
+    width: 100%;
+  }
+}
+
+.itemPedidoHeader {
+  display: flex;
+  padding: 10px;
+  justify-content: space-between;
+  background-color: var(--color-text-secondary);
+  color: #fff;
+}
+
+.itemPedidoBody {
+  padding: 10px;
+}
+
+.itemPedidoBody ul {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemPedidoFooter {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}

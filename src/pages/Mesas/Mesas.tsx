@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 
 import stylesIndex from "../../index.module.css";
+import Header from "../../components/Header/Header";
 
 const dadosLocalStorage = getDataLocalStorage();
 
@@ -87,8 +88,10 @@ function Mesas() {
 
   return (
     <div>
-      <h2>Mesas</h2>
-      <p>Selecione uma mesa para abrir ou acompanhar o pedido</p>
+      <Header
+        title="Mesas"
+        description="Selecione uma mesa para abrir ou acompanhar o pedido"
+      />
 
       <div className={styles.containerChairs}>
         {mesas.map((mesa) => (

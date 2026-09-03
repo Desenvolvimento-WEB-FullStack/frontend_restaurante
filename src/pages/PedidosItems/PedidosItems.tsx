@@ -4,7 +4,10 @@ import { getDataLocalStorage } from "../../utils/getDataLocalStorage";
 import { FaArrowLeft } from "react-icons/fa";
 import styles from "./PedidosItems.module.css";
 import Item from "./Item";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
+import { formatMoney } from "../../utils/formatMoney";
+import Swal from "sweetalert2";
+import Header from "../../components/Header/Header";
 
 const dadosLocalStorage = getDataLocalStorage();
 
@@ -21,14 +24,48 @@ type ItemCardapio = {
   atualizado_em: string;
 };
 
+type Mesa = {
+  id: number;
+  nome: string;
+  reservado: boolean;
+  quantidade_lugares: number;
+  criado_em: string;
+  atualizado_em: string;
+};
+
+type PedidoItem = {
+  id: number;
+  pedido_id: number;
+  item_cardapio_id: number;
+  quantidade: number;
+  criado_em: string;
+  atualizado_em: string;
+  itemCardapio: ItemCardapio;
+};
+
+type DadosPedido = {
+  id: number;
+  nome_cliente: string;
+  mesa_id: number;
+  fechado: boolean;
+  data: string;
+  total: number | null;
+  criado_em: string;
+  atualizado_em: string;
+  mesa: Mesa;
+  items: PedidoItem[];
+  subTotal: number;
+};
+
 function PedidosItems() {
   const params = useParams();
+  const navigate = useNavigate();
 
   const [itemsCardapio, setItemsCardapio] = useState<ItemCardapio[]>([]);
-  const [dadosPedido, setDadosPedido] = useState(null);
+  const [dadosPedido, setDadosPedido] = useState<DadosPedido | null>(null);
 
   async function buscarDadosPedidoAtual() {
-    const response = await axios.get(
+    const response = await axios.get<DadosPedido>(
       `http://localhost:8888/pedidos/${params.id}`,
       {
         headers: {
@@ -51,6 +88,37 @@ function PedidosItems() {
     setItemsCardapio(response.data);
   }
 
+  async function fecharPedido() {
+    try {
+      const respostaUsuario = await Swal.fire({
+        title: "Deseja fechar essa mesa agora?",
+        showDenyButton: false,
+        showCancelButton: true,
+        confirmButtonText: "Sim, fechar Agora",
+        cancelButtonText: `Cancelar`,
+      });
+
+      if (respostaUsuario.isConfirmed === true) {
+        await axios.put(
+          `http://localhost:8888/pedidos/${params.id}/fechar`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearen ${dadosLocalStorage.token}`,
+            },
+          },
+        );
+        Swal.fire({
+          icon: "success",
+          title: `O pedido ${params.id} foi fechado com sucesso!`,
+        });
+        navigate("/mesas");
+      }
+    } catch {
+      alert("Erro ao fechar o pedido");
+    }
+  }
+
   useEffect(() => {
     buscaItemsCardapio();
     buscarDadosPedidoAtual();
@@ -65,17 +133,46 @@ function PedidosItems() {
 
       <div className={styles.headerContainer}>
         <div>
-          <h2>Mesa {dadosPedido?.mesa?.nome}</h2>
-          <span>Cliente: {dadosPedido?.nome_cliente}</span>
+          <Header
+            title={`Mesa ${dadosPedido?.mesa?.nome}`}
+            description={`Cliente: ${dadosPedido?.nome_cliente}`}
+          />
         </div>
         <span>Pedido em {dadosPedido?.fechado ? "Fechado" : "Aberto"}</span>
       </div>
 
-      <div className={styles.itemsContainer}>
-        <h3>Cardápio</h3>
-        {itemsCardapio.map((item) => (
-          <Item item={item} key={item.id} />
-        ))}
+      <div className={styles.contentContainer}>
+        <div className={styles.itemsContainer}>
+          <h3>Cardápio</h3>
+          {itemsCardapio.map((item) => (
+            <Item refresh={buscarDadosPedidoAtual} item={item} key={item.id} />
+          ))}
+        </div>
+        <div className={styles.resumeContainer}>
+          <div className={styles.resumeListContainer}>
+            <h3>Resumo do pedido</h3>
+            <ul>
+              {dadosPedido?.items.map((item) => (
+                <li>
+                  <div>
+                    <span>{item.quantidade}x - </span>
+                    <span>{item.itemCardapio.nome}</span>
+                  </div>
+                  <span>
+                    {formatMoney(
+                      item.quantidade * Number(item.itemCardapio.preco),
+                    )}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <div>
+              <span>Total</span>
+              <span>{formatMoney(dadosPedido?.subTotal || 0)}</span>
+            </div>
+            <button onClick={fecharPedido}>Fechar pedido</button>
+          </div>
+        </div>
       </div>
     </div>
   );

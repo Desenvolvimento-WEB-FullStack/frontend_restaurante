@@ -8,7 +8,23 @@ import { getDataLocalStorage } from "../../utils/getDataLocalStorage";
 
 const dadosLocalStorage = getDataLocalStorage();
 
-function Item({ item }) {
+type ItemProps = {
+  item: {
+    id: number;
+    nome: string;
+    preco: string;
+    tipo: string;
+    porcoes: number;
+    tamanho: "P" | "M" | "G";
+    vegetariano: boolean;
+    descricao: string | null;
+    criado_em: string;
+    atualizado_em: string;
+  };
+  refresh(): void;
+};
+
+function Item({ item, refresh }: ItemProps) {
   const params = useParams();
 
   const [quantidade, setQuantidade] = useState(1);
@@ -23,8 +39,8 @@ function Item({ item }) {
     setQuantidade(quantidade + 1);
   }
 
-  function adicionarItemAoPedido() {
-    axios.post(
+  async function adicionarItemAoPedido() {
+    await axios.post(
       "http://localhost:8888/items-pedidos",
       {
         pedido_id: Number(params.id),
@@ -37,6 +53,10 @@ function Item({ item }) {
         },
       },
     );
+
+    setQuantidade(1);
+
+    refresh();
   }
 
   return (
@@ -56,7 +76,11 @@ function Item({ item }) {
             <FaMinus onClick={diminuirQuantidade} />
           </button>
 
-          <span>{quantidade}</span>
+          <input
+            value={quantidade}
+            onChange={(e) => setQuantidade(Number(e.target.value) || 1)}
+            style={{ width: 20 }}
+          />
           <FaPlus onClick={aumentarQuantidade} />
         </div>
         <button onClick={adicionarItemAoPedido}>Adicionar</button>
