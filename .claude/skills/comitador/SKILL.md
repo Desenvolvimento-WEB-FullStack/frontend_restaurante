@@ -74,13 +74,20 @@ Depois do push bem-sucedido, **pare e pergunte ao usuário** se deseja abrir o
 pull request agora. Não abra o PR automaticamente — esse passo exige
 confirmação explícita, mesmo que o resto da skill rode sem interrupção.
 
+Se o usuário confirmar, **pergunte também qual é a branch alvo (base) do PR**
+antes de criar qualquer coisa. Sugira `develop` como padrão (branch alvo
+padrão deste projeto), mas deixe explícito que o usuário pode escolher outra
+(ex.: `main`, uma branch de release/staging). Confirme que `develop` existe no
+remoto antes de sugeri-la (`git ls-remote --heads origin develop`); se não
+existir, avise e peça a branch correta. Não presuma a base sem essa
+confirmação.
+
 ## 6. Abrir o pull request (somente após confirmação)
 
-Se o usuário confirmar:
+Se o usuário confirmar e informar a branch alvo:
 
-- Descubra a branch base (normalmente `main`, confirme com
-  `git remote show origin` ou `gh repo view --json defaultBranchRef` se
-  houver dúvida).
+- Use a branch alvo escolhida pelo usuário como base do PR (`--base <branch>`
+  no `gh pr create`).
 - Reveja **todos** os commits que entrarão no PR (não só o último):
   `git log <base>..HEAD --oneline` e `git diff <base>...HEAD`.
 - Título curto (até ~70 caracteres), objetivo, descrevendo a mudança
