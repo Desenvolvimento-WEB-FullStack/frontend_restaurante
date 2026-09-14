@@ -1,0 +1,42 @@
+:root {
+  --color-primary: #8f4219;
+  --color-primary-dark: #723416;
+  --color-background: #f4ece3;
+  --color-white: #fff;
+  --color-text-muted: #7b6e62;
+  --color-text-secondary: #77695c;
+  --color-border: #e8e2d8;
+}
+
+body {
+  background: #f4ece3;
+}
+
+.containerInput {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+
+  width: 100%;
+}
+
+.containerInput label {
+  color: #7b6e62;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.containerInput input {
+  height: 38px;
+  border-radius: 8px;
+  border: 1px solid #e8e2d8;
+  padding: 0 12px;
+  color: #8f4219;
+}
+
+.containerInput input:focus {
+  outline: none;
+  border-color: #8f4219;
+  border-width: 1.5px;
+}
