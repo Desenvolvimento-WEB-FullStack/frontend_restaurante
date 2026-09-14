@@ -7,8 +7,18 @@ import Header from "../../components/Header/Header";
 
 const dadosLocalStorage = getDataLocalStorage();
 
+type Pedido = {
+  id: number;
+  nome_cliente: string;
+  fechado: boolean;
+  total: number | null;
+  mesa: {
+    nome: string;
+  };
+};
+
 function Pedidos() {
-  const [pedidos, setPedidos] = useState([]);
+  const [pedidos, setPedidos] = useState<Pedido[]>([]);
 
   async function buscarPedidos() {
     const response = await axios.get("http://localhost:8888/pedidos", {
