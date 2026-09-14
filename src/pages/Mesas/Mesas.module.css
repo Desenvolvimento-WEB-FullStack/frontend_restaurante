@@ -1,0 +1,22 @@
+.containerChairs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  width: 70%;
+  margin: 40px auto;
+}
+
+.chair {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding: 10px;
+  border-radius: 16px;
+  width: 150px;
+}
+
+.chairHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
