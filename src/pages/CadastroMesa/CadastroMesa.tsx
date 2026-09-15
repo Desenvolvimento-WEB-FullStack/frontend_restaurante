@@ -46,8 +46,13 @@ function CadastroMesa() {
       navigate("/mesas");
     } catch (error) {
       setLoading(false);
+
+      const mensagem = axios.isAxiosError(error)
+        ? error.response?.data?.error
+        : undefined;
+
       Swal.fire({
-        title: error.response.data.error,
+        title: mensagem ?? "Erro ao cadastrar mesa",
         icon: "error",
         showConfirmButton: false,
         timer: 3000,
@@ -57,7 +62,10 @@ function CadastroMesa() {
 
   return (
     <div>
-      <Header title="Nova Mesa" description="Cadastre uma nova mesa para o salão" />
+      <Header
+        title="Nova Mesa"
+        description="Cadastre uma nova mesa para o salão"
+      />
 
       <form className={styles.container} onSubmit={cadastrarMesa}>
         <div className={stylesIndex.containerInput}>

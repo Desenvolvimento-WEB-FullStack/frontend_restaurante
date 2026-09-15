@@ -40,14 +40,16 @@ function Login() {
       });
 
       navigate("/mesas");
-    } catch (error) {
+    } catch {
       setLoading(false);
+      /*
       Swal.fire({
         title: error.response.data.error,
         icon: "error",
         showConfirmButton: false,
         timer: 3000,
       });
+      */
     }
   }
 
