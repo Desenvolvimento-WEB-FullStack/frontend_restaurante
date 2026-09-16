@@ -1,6 +1,5 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { getDataLocalStorage } from "../../utils/getDataLocalStorage";
+
 import { FaArrowLeft } from "react-icons/fa";
 import styles from "./PedidosItems.module.css";
 import Item from "./Item";
@@ -8,8 +7,7 @@ import { useParams, useNavigate } from "react-router";
 import { formatMoney } from "../../utils/formatMoney";
 import Swal from "sweetalert2";
 import Header from "../../components/Header/Header";
-
-const dadosLocalStorage = getDataLocalStorage();
+import api from "../../services/api";
 
 type ItemCardapio = {
   id: number;
@@ -65,26 +63,12 @@ function PedidosItems() {
   const [dadosPedido, setDadosPedido] = useState<DadosPedido | null>(null);
 
   async function buscarDadosPedidoAtual() {
-    const response = await axios.get<DadosPedido>(
-      `http://localhost:8888/pedidos/${params.id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${dadosLocalStorage.token}`,
-        },
-      },
-    );
+    const response = await api.get<DadosPedido>(`pedidos/${params.id}`);
     setDadosPedido(response.data);
   }
 
   async function buscaItemsCardapio() {
-    const response = await axios.get<ItemCardapio[]>(
-      "http://localhost:8888/items-cardapio",
-      {
-        headers: {
-          Authorization: `Bearer ${dadosLocalStorage.token}`,
-        },
-      },
-    );
+    const response = await api.get<ItemCardapio[]>("items-cardapio");
     setItemsCardapio(response.data);
   }
 
@@ -99,15 +83,7 @@ function PedidosItems() {
       });
 
       if (respostaUsuario.isConfirmed === true) {
-        await axios.put(
-          `http://localhost:8888/pedidos/${params.id}/fechar`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearen ${dadosLocalStorage.token}`,
-            },
-          },
-        );
+        await api.put(`pedidos/${params.id}/fechar`);
         Swal.fire({
           icon: "success",
           title: `O pedido ${params.id} foi fechado com sucesso!`,

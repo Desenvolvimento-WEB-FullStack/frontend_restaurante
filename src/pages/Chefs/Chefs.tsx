@@ -8,11 +8,10 @@ import {
   Paper,
   Chip,
 } from "@mui/material";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { getDataLocalStorage } from "../../utils/getDataLocalStorage";
 
-const dadosLocalStorage = getDataLocalStorage();
+import { useEffect, useState } from "react";
+
+import api from "../../services/api";
 
 type Chef = {
   id: number;
@@ -27,11 +26,7 @@ function Chefs() {
   const [chefs, setChefs] = useState<Chef[]>([]);
 
   async function buscarChefs() {
-    const response = await axios.get<Chef[]>("http://localhost:8888/chefs", {
-      headers: {
-        Authorization: `Bearen ${dadosLocalStorage.token}`,
-      },
-    });
+    const response = await api.get<Chef[]>("/chefs");
 
     setChefs(response.data);
   }

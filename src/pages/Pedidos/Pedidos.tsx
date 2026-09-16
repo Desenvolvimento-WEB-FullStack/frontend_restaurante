@@ -1,11 +1,8 @@
-import axios from "axios";
 import styles from "./Pedidos.module.css";
-import { getDataLocalStorage } from "../../utils/getDataLocalStorage";
 import { useEffect, useState } from "react";
 import { formatMoney } from "../../utils/formatMoney";
 import Header from "../../components/Header/Header";
-
-const dadosLocalStorage = getDataLocalStorage();
+import api from "../../services/api";
 
 type Pedido = {
   id: number;
@@ -19,20 +16,21 @@ type Pedido = {
 
 function Pedidos() {
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
+  const [filtroStatus, setFiltroStatus] = useState<null | boolean>(false);
 
   async function buscarPedidos() {
-    const response = await axios.get("http://localhost:8888/pedidos", {
-      headers: {
-        Authorization: `Bearen ${dadosLocalStorage.token}`,
-      },
-    });
-
+    const response = await api.get("pedidos");
     setPedidos(response.data);
   }
 
   useEffect(() => {
     buscarPedidos();
   }, []);
+
+  const pedidosFiltrados =
+    filtroStatus === null
+      ? pedidos
+      : pedidos.filter((pedido) => pedido.fechado === filtroStatus);
 
   return (
     <div>
@@ -42,13 +40,13 @@ function Pedidos() {
       />
 
       <div>
-        <button>Todos</button>
-        <button>Abertos</button>
-        <button>Finalizados</button>
+        <button onClick={() => setFiltroStatus(null)}>Todos</button>
+        <button onClick={() => setFiltroStatus(false)}>Abertos</button>
+        <button onClick={() => setFiltroStatus(true)}>Finalizados</button>
       </div>
 
       <div className={styles.itemsContainer}>
-        {pedidos.map((pedido) => (
+        {pedidosFiltrados.map((pedido) => (
           <div className={styles.itemPedido}>
             <div className={styles.itemPedidoHeader}>
               <div>
