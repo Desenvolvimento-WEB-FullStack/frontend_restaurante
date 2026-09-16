@@ -2,11 +2,10 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 import { formatMoney } from "../../utils/formatMoney";
 import styles from "./PedidosItems.module.css";
 import { useState } from "react";
-import axios from "axios";
-import { useParams } from "react-router";
-import { getDataLocalStorage } from "../../utils/getDataLocalStorage";
 
-const dadosLocalStorage = getDataLocalStorage();
+import { useParams } from "react-router";
+
+import api from "../../services/api";
 
 type ItemProps = {
   item: {
@@ -40,19 +39,11 @@ function Item({ item, refresh }: ItemProps) {
   }
 
   async function adicionarItemAoPedido() {
-    await axios.post(
-      "http://localhost:8888/items-pedidos",
-      {
-        pedido_id: Number(params.id),
-        quantidade: quantidade,
-        item_cardapio_id: item.id,
-      },
-      {
-        headers: {
-          Authorization: `Bearen ${dadosLocalStorage.token}`,
-        },
-      },
-    );
+    await api.post("items-pedidos", {
+      pedido_id: Number(params.id),
+      quantidade: quantidade,
+      item_cardapio_id: item.id,
+    });
 
     setQuantidade(1);
 

@@ -1,8 +1,7 @@
 import styles from "./Mesas.module.css";
 import { GiWoodenChair } from "react-icons/gi";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { getDataLocalStorage } from "../../utils/getDataLocalStorage";
+
 import { useNavigate } from "react-router";
 
 import {
@@ -14,8 +13,7 @@ import {
 
 import stylesIndex from "../../index.module.css";
 import Header from "../../components/Header/Header";
-
-const dadosLocalStorage = getDataLocalStorage();
+import api from "../../services/api";
 
 type Mesa = {
   id: number;
@@ -47,19 +45,11 @@ function Mesas() {
     try {
       event.preventDefault();
 
-      const response = await axios.post(
-        "http://localhost:8888/pedidos",
-        {
-          mesa_id: mesaClicada?.id,
-          nome_cliente: nomeCliente,
-          data: "2026-08-26",
-        },
-        {
-          headers: {
-            Authorization: `Bearen ${dadosLocalStorage.token}`,
-          },
-        },
-      );
+      const response = await api.post("pedidos", {
+        mesa_id: mesaClicada?.id,
+        nome_cliente: nomeCliente,
+        data: "2026-08-26",
+      });
 
       navigate(`/pedido-items/${response.data.id}`);
     } catch {
@@ -68,12 +58,7 @@ function Mesas() {
   }
 
   async function buscarMesas() {
-    const response = await axios.get<Mesa[]>("http://localhost:8888/mesas", {
-      headers: {
-        Authorization: `Bearen ${dadosLocalStorage.token}`,
-      },
-    });
-
+    const response = await api.get<Mesa[]>("mesas");
     setMesas(response.data);
   }
 
