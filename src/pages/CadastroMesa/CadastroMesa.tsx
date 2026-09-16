@@ -7,9 +7,8 @@ import styles from "./CadastroMesa.module.css";
 import stylesIndex from "../../index.module.css";
 import Header from "../../components/Header/Header";
 import Loading from "../../components/Loading/Loading";
-import { getDataLocalStorage } from "../../utils/getDataLocalStorage";
 
-const dadosLocalStorage = getDataLocalStorage();
+import api from "../../services/api";
 
 function CadastroMesa() {
   const navigate = useNavigate();
@@ -25,18 +24,10 @@ function CadastroMesa() {
 
       setLoading(true);
 
-      await axios.post(
-        "http://localhost:8888/mesas",
-        {
-          nome: nome,
-          quantidade_lugares: quantidadeLugares,
-        },
-        {
-          headers: {
-            Authorization: `Bearen ${dadosLocalStorage.token}`,
-          },
-        },
-      );
+      await api.post("mesas", {
+        nome: nome,
+        quantidade_lugares: quantidadeLugares,
+      });
 
       Swal.fire({
         title: "Mesa cadastrada com sucesso",

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import axios from "axios";
+
 import Swal from "sweetalert2";
 
 import styles from "./Login.module.css"; // MODO novo com CSS modules
 import stylesIndex from "../../index.module.css";
 import Loading from "../../components/Loading/Loading";
+import api from "../../services/api";
+import axios from "axios";
 
 function Login() {
   const navigate = useNavigate();
@@ -26,7 +28,7 @@ function Login() {
       // atrasar de intencional 2 segundos a execucao da próxima
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      const response = await axios.post("http://localhost:8888/auth/login", {
+      const response = await api.post("auth/login", {
         email: email,
         senha: password,
       });
@@ -40,16 +42,19 @@ function Login() {
       });
 
       navigate("/mesas");
-    } catch {
+    } catch (error) {
       setLoading(false);
-      /*
+
+      const mensagem = axios.isAxiosError(error)
+        ? error.response?.data?.error
+        : undefined;
+
       Swal.fire({
-        title: error.response.data.error,
+        title: mensagem,
         icon: "error",
         showConfirmButton: false,
         timer: 3000,
       });
-      */
     }
   }
 
