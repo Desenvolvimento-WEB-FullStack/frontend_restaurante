@@ -54,9 +54,11 @@ checklist para próximas mudanças — não são bloqueantes, mas valem correç�
 
 ## Autenticação / segurança
 
-- Sem guard de rota: qualquer rota (`/mesas`, `/pedidos`, etc.) é acessível
-  diretamente pela URL mesmo sem login prévio; a página só vai falhar ao
-  chamar a API sem token válido.
+- ~~Sem guard de rota~~ Corrigido: `src/components/RotaPrivada/RotaPrivada.tsx`
+  envolve as rotas protegidas (`/mesas`, `/mesas/nova`, `/pedido-items/:id`,
+  `/pedidos`, `/chefes`) em `App.tsx` e redireciona para `/` via `<Navigate>`
+  quando `getDataLocalStorage()` não retorna dados. Continua sendo apenas uma
+  checagem de presença no `localStorage`, não de validade/expiração do token.
 - `dadosLocalStorage` é lido **uma única vez no escopo do módulo** (fora do
   componente) em cada página — se o token mudar/expirar durante a sessão sem
   reload de página, o valor em memória fica desatualizado.
