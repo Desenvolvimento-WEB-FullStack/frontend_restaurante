@@ -7,6 +7,18 @@
 
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 660px) {
+  .containerMenu {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .contentLeft {
+    flex-direction: column;
+  }
 }
 
 .containerMenu h1 {
@@ -36,4 +48,10 @@
 .contentRight {
   display: flex;
   gap: 20px;
+}
+
+.roleText {
+  font-size: 20px;
+  color: #8f4219;
+  font-weight: bold;
 }

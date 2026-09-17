@@ -1,5 +1,5 @@
 import styles from "./Mesas.module.css";
-import { GiWoodenChair } from "react-icons/gi";
+
 import { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router";
@@ -14,6 +14,7 @@ import {
 import stylesIndex from "../../index.module.css";
 import Header from "../../components/Header/Header";
 import api from "../../services/api";
+import { MdTableBar } from "react-icons/md";
 
 type Mesa = {
   id: number;
@@ -27,6 +28,8 @@ type Mesa = {
 
 function Mesas() {
   const navigate = useNavigate();
+
+  const [statusFiltro, setStatusFiltro] = useState<null | boolean>(null);
   const [modalAberto, setModalAberto] = useState(false);
   const [mesas, setMesas] = useState<Mesa[]>([]);
   const [mesaClicada, setMesaClicada] = useState<Mesa | null>(null);
@@ -71,6 +74,11 @@ function Mesas() {
     buscarMesas();
   }, []); // Deve executar durante a renderização inicial da tela
 
+  const mesasFiltradas =
+    statusFiltro === null
+      ? mesas
+      : mesas.filter((mesa) => mesa.reservado === statusFiltro);
+
   return (
     <div>
       <Header
@@ -78,8 +86,35 @@ function Mesas() {
         description="Selecione uma mesa para abrir ou acompanhar o pedido"
       />
 
+      <div className={styles.containerBotoesFiltro}>
+        <button
+          className={
+            statusFiltro === null ? styles.filtroAtivo : styles.filtroInativo
+          }
+          onClick={() => setStatusFiltro(null)}
+        >
+          Todas
+        </button>
+        <button
+          className={
+            statusFiltro === false ? styles.filtroAtivo : styles.filtroInativo
+          }
+          onClick={() => setStatusFiltro(false)}
+        >
+          Livres
+        </button>
+        <button
+          className={
+            statusFiltro === true ? styles.filtroAtivo : styles.filtroInativo
+          }
+          onClick={() => setStatusFiltro(true)}
+        >
+          Ocupadas
+        </button>
+      </div>
+
       <div className={styles.containerChairs}>
-        {mesas.map((mesa) => (
+        {mesasFiltradas.map((mesa) => (
           <div
             className={styles.chair}
             key={mesa.id}
@@ -89,13 +124,17 @@ function Mesas() {
                 : () => visualizarCardapio(mesa)
             }
           >
-            {mesa.nome}
             <div className={styles.chairHeader}>
-              <span>{mesa.reservado ? "Ocupado" : "Livre"}</span>
-              <GiWoodenChair />
+              <span className={mesa.reservado ? styles.ocupado : styles.livre}>
+                {mesa.reservado ? "Ocupado" : "Livre"}
+              </span>
+
+              <MdTableBar color="#987f78" width={20} />
             </div>
-            <h3>{mesa.nome}</h3>
-            <span>{mesa.quantidade_lugares || 0} lugares</span>
+            <h3>Mesa {mesa.nome}</h3>
+            <span className={styles.quantidade_lugares}>
+              {mesa.quantidade_lugares || 0} lugares
+            </span>
           </div>
         ))}
       </div>

@@ -45,7 +45,11 @@ const dadosLocalStorage = getDataLocalStorage(); // lido no escopo do módulo, f
 `getDataLocalStorage()` (`src/utils/getDataLocalStorage.ts`) lê e faz parse da
 chave `@dadoslogin` do `localStorage`, populada no login (`src/pages/Login/Login.tsx`)
 com a resposta de `POST /auth/login` (contém `token` e `role`, entre outros).
-Não há rotas protegidas de fato (nenhum guard/redirect caso não exista token).
+As rotas exceto `/` são protegidas pelo componente `RotaPrivada`
+(`src/components/RotaPrivada/RotaPrivada.tsx`), que redireciona para `/` via
+`<Navigate>` quando `getDataLocalStorage()` não retorna dados. É apenas uma
+checagem de presença no `localStorage` — não valida expiração/veracidade do
+token.
 
 ## Convenções observadas
 

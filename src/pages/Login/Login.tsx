@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-
+import axios from "axios";
 import Swal from "sweetalert2";
 
-import styles from "./Login.module.css"; // MODO novo com CSS modules
-import stylesIndex from "../../index.module.css";
-import Loading from "../../components/Loading/Loading";
 import api from "../../services/api";
-import axios from "axios";
+
+import Loading from "../../components/Loading/Loading";
+
+import styles from "./Login.module.css";
+import stylesIndex from "../../index.module.css";
 
 function Login() {
   const navigate = useNavigate();
@@ -18,7 +19,6 @@ function Login() {
   const [password, setPassword] = useState("");
 
   // Função que vai na api validar se usuario existe
-
   async function fazerLogin(event: React.SubmitEvent) {
     try {
       event.preventDefault();

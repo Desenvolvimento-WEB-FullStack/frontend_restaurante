@@ -1,5 +1,6 @@
 import { Route, Routes, useLocation } from "react-router";
 import Menu from "./components/Menu/Menu";
+import RotaPrivada from "./components/RotaPrivada/RotaPrivada";
 import Login from "./pages/Login/Login";
 import Mesas from "./pages/Mesas/Mesas";
 import CadastroMesa from "./pages/CadastroMesa/CadastroMesa";
@@ -18,11 +19,46 @@ function App() {
       {location.pathname !== "/" && <Menu />}
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/mesas" element={<Mesas />} />
-        <Route path="/mesas/nova" element={<CadastroMesa />} />
-        <Route path="/pedido-items/:id" element={<PedidosItems />} />
-        <Route path="/pedidos" element={<Pedidos />} />
-        <Route path="/chefes" element={<Chefs />} />
+        <Route
+          path="/mesas"
+          element={
+            <RotaPrivada>
+              <Mesas />
+            </RotaPrivada>
+          }
+        />
+        <Route
+          path="/mesas/nova"
+          element={
+            <RotaPrivada>
+              <CadastroMesa />
+            </RotaPrivada>
+          }
+        />
+        <Route
+          path="/pedido-items/:id"
+          element={
+            <RotaPrivada>
+              <PedidosItems />
+            </RotaPrivada>
+          }
+        />
+        <Route
+          path="/pedidos"
+          element={
+            <RotaPrivada>
+              <Pedidos />
+            </RotaPrivada>
+          }
+        />
+        <Route
+          path="/chefes"
+          element={
+            <RotaPrivada>
+              <Chefs />
+            </RotaPrivada>
+          }
+        />
       </Routes>
     </>
   );
