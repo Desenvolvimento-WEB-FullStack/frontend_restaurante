@@ -11,7 +11,10 @@ import {
 
 import { useEffect, useState } from "react";
 
+import globalStyles from "../../index.module.css";
+
 import api from "../../services/api";
+import Header from "../../components/Header/Header";
 
 type Chef = {
   id: number;
@@ -36,10 +39,13 @@ function Chefs() {
   }, []);
 
   return (
-    <div>
-      <h2>Quadro de chefs</h2>
+    <div className={globalStyles.mainContainer}>
+      <Header
+        title="Chefes"
+        description="Consulte todas os chefes do restaurante"
+      />
 
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} style={{ marginTop: 20 }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -51,7 +57,7 @@ function Chefs() {
           <TableBody>
             {chefs.map((chef) => (
               <TableRow>
-                <TableCell>{chef.criado_em}</TableCell>
+                <TableCell>{chef.nome}</TableCell>
                 <TableCell>{chef.especializacao}</TableCell>
                 <TableCell>
                   {chef.faz_sobremesa ? (

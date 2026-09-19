@@ -2,7 +2,7 @@
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  width: 70%;
+
   margin: 10px auto;
 }
 
@@ -52,53 +52,4 @@
 .quantidade_lugares {
   color: #987f78;
   font-size: 14px;
-}
-
-.containerBotoesFiltro {
-  display: flex;
-  gap: 10px;
-  width: 70%;
-  margin: 10px auto;
-}
-
-.containerBotoesFiltro button {
-  min-width: 70px;
-  border-radius: 20px;
-  background-color: #f4ece3;
-  border: 1px solid #ccc;
-  height: 38px;
-  transition:
-    transform 0.2s ease,
-    background-color 0.2s ease;
-}
-
-.containerBotoesFiltro button:hover {
-  background-color: #e9dfd2;
-  transform: scale(1.05);
-  cursor: pointer;
-}
-
-.containerBotoesFiltro button:active {
-  animation: pulse 0.3s ease-out;
-}
-
-.filtroAtivo {
-  background-color: var(--color-primary-dark) !important;
-  color: #fff;
-}
-
-.filtroInativo {
-  background-color: #f4ece3 !important;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(0.9);
-  }
-  100% {
-    transform: scale(1);
-  }
 }
