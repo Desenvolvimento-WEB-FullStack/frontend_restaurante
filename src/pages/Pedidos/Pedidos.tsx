@@ -8,6 +8,17 @@ import api from "../../services/api";
 import globalStyles from "../../index.module.css";
 import styles from "./Pedidos.module.css";
 
+type ItemCardapio = {
+  id: number;
+  nome: string;
+};
+
+type PedidoItem = {
+  id: number;
+  quantidade: number;
+  itemCardapio: ItemCardapio;
+};
+
 type Pedido = {
   id: number;
   nome_cliente: string;
@@ -16,6 +27,7 @@ type Pedido = {
   mesa: {
     nome: string;
   };
+  items: PedidoItem[];
 };
 
 function Pedidos() {
