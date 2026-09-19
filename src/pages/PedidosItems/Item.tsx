@@ -61,10 +61,13 @@ function Item({ item, refresh }: ItemProps) {
         </div>
       </div>
       <div className={styles.itemContainerRight}>
-        <span>{formatMoney(Number(item.preco))}</span>
-        <div>
-          <button disabled={quantidade <= 1}>
-            <FaMinus onClick={diminuirQuantidade} />
+        <span className={styles.itemPreco}>
+          {formatMoney(Number(item.preco))}
+        </span>
+
+        <div className={styles.containerBotoes}>
+          <button disabled={quantidade <= 1} className={styles.botaoDiminuir}>
+            <FaMinus fontSize={12} onClick={diminuirQuantidade} />
           </button>
 
           <input
@@ -72,9 +75,19 @@ function Item({ item, refresh }: ItemProps) {
             onChange={(e) => setQuantidade(Number(e.target.value) || 1)}
             style={{ width: 20 }}
           />
-          <FaPlus onClick={aumentarQuantidade} />
+          <button
+            onClick={aumentarQuantidade}
+            className={styles.botaoAcrescentar}
+          >
+            <FaPlus fontSize={12} />
+          </button>
         </div>
-        <button onClick={adicionarItemAoPedido}>Adicionar</button>
+        <button
+          className={styles.botaoAdicionar}
+          onClick={adicionarItemAoPedido}
+        >
+          Adicionar
+        </button>
       </div>
     </div>
   );

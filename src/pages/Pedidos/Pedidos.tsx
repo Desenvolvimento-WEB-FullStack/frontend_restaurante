@@ -1,8 +1,12 @@
-import styles from "./Pedidos.module.css";
 import { useEffect, useState } from "react";
+
 import { formatMoney } from "../../utils/formatMoney";
 import Header from "../../components/Header/Header";
+
 import api from "../../services/api";
+
+import globalStyles from "../../index.module.css";
+import styles from "./Pedidos.module.css";
 
 type Pedido = {
   id: number;
@@ -33,13 +37,13 @@ function Pedidos() {
       : pedidos.filter((pedido) => pedido.fechado === filtroStatus);
 
   return (
-    <div>
+    <div className={globalStyles.mainContainer}>
       <Header
         title="Pedidos"
         description="Acompanhe todos os pedidos finalizados e em abertos"
       />
 
-      <div>
+      <div className={globalStyles.containerBotoesFiltro}>
         <button onClick={() => setFiltroStatus(null)}>Todos</button>
         <button onClick={() => setFiltroStatus(false)}>Abertos</button>
         <button onClick={() => setFiltroStatus(true)}>Finalizados</button>
@@ -58,12 +62,11 @@ function Pedidos() {
 
             <div className={styles.itemPedidoBody}>
               <ul>
-                <li>
-                  <span>2x Coxinha</span> <span>R$ 123</span>
-                </li>
-                <li>
-                  <span>2x Coxinha</span> <span>R$ 123</span>
-                </li>
+                {pedido.items.map((item) => (
+                  <li>
+                    {item.quantidade}x - {item.itemCardapio.nome}
+                  </li>
+                ))}
               </ul>
             </div>
 

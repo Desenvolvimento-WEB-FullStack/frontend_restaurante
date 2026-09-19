@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
-
+import { useParams, useNavigate, Link } from "react-router";
 import { FaArrowLeft } from "react-icons/fa";
-import styles from "./PedidosItems.module.css";
-import Item from "./Item";
-import { useParams, useNavigate } from "react-router";
-import { formatMoney } from "../../utils/formatMoney";
 import Swal from "sweetalert2";
+
+import { formatMoney } from "../../utils/formatMoney";
+
 import Header from "../../components/Header/Header";
+import Item from "./Item";
+
 import api from "../../services/api";
+
+import styles from "./PedidosItems.module.css";
+import globalStyles from "../../index.module.css";
 
 type ItemCardapio = {
   id: number;
@@ -101,20 +105,21 @@ function PedidosItems() {
   }, []); // Deve executar durante a renderização inicial do componente, ou seja, quando o componente for montado na tela.
 
   return (
-    <div className={styles.container}>
-      <div className={styles.backTextContainer}>
-        <FaArrowLeft color="#CCC" />
+    <div className={globalStyles.mainContainer}>
+      <Link to="/mesas" className={styles.backTextContainer}>
+        <FaArrowLeft color="#A58D80" />
         <span className={styles.backText}>Voltar para mesas</span>
-      </div>
+      </Link>
 
       <div className={styles.headerContainer}>
-        <div>
-          <Header
-            title={`Mesa ${dadosPedido?.mesa?.nome}`}
-            description={`Cliente: ${dadosPedido?.nome_cliente}`}
-          />
-        </div>
-        <span>Pedido em {dadosPedido?.fechado ? "Fechado" : "Aberto"}</span>
+        <Header
+          title={`Mesa ${dadosPedido?.mesa?.nome}`}
+          description={`Cliente: ${dadosPedido?.nome_cliente}`}
+        />
+
+        <span className={styles.statusPedido}>
+          Pedido em {dadosPedido?.fechado ? "Fechado" : "Aberto"}
+        </span>
       </div>
 
       <div className={styles.contentContainer}>
@@ -131,10 +136,15 @@ function PedidosItems() {
               {dadosPedido?.items.map((item) => (
                 <li>
                   <div>
-                    <span>{item.quantidade}x - </span>
+                    <span>
+                      <span className={styles.itemCarrinhoQuantidade}>
+                        {item.quantidade}x
+                      </span>{" "}
+                      -{" "}
+                    </span>
                     <span>{item.itemCardapio.nome}</span>
                   </div>
-                  <span>
+                  <span className={styles.itemCarrinhoPreco}>
                     {formatMoney(
                       item.quantidade * Number(item.itemCardapio.preco),
                     )}
@@ -142,11 +152,13 @@ function PedidosItems() {
                 </li>
               ))}
             </ul>
-            <div>
+            <div className={styles.totalContainer}>
               <span>Total</span>
               <span>{formatMoney(dadosPedido?.subTotal || 0)}</span>
             </div>
-            <button onClick={fecharPedido}>Fechar pedido</button>
+            <button className={styles.botaoFecharPedido} onClick={fecharPedido}>
+              Fechar pedido
+            </button>
           </div>
         </div>
       </div>

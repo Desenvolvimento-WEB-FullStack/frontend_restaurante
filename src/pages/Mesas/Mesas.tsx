@@ -1,9 +1,6 @@
-import styles from "./Mesas.module.css";
-
 import { useEffect, useState } from "react";
-
 import { useNavigate } from "react-router";
-
+import { MdTableBar } from "react-icons/md";
 import {
   Dialog,
   DialogTitle,
@@ -11,10 +8,11 @@ import {
   DialogActions,
 } from "@mui/material";
 
-import stylesIndex from "../../index.module.css";
 import Header from "../../components/Header/Header";
 import api from "../../services/api";
-import { MdTableBar } from "react-icons/md";
+
+import styles from "./Mesas.module.css";
+import stylesIndex from "../../index.module.css";
 
 type Mesa = {
   id: number;
@@ -80,16 +78,18 @@ function Mesas() {
       : mesas.filter((mesa) => mesa.reservado === statusFiltro);
 
   return (
-    <div>
+    <div className={stylesIndex.mainContainer}>
       <Header
         title="Mesas"
         description="Selecione uma mesa para abrir ou acompanhar o pedido"
       />
 
-      <div className={styles.containerBotoesFiltro}>
+      <div className={stylesIndex.containerBotoesFiltro}>
         <button
           className={
-            statusFiltro === null ? styles.filtroAtivo : styles.filtroInativo
+            statusFiltro === null
+              ? stylesIndex.filtroAtivo
+              : stylesIndex.filtroInativo
           }
           onClick={() => setStatusFiltro(null)}
         >
@@ -97,7 +97,9 @@ function Mesas() {
         </button>
         <button
           className={
-            statusFiltro === false ? styles.filtroAtivo : styles.filtroInativo
+            statusFiltro === false
+              ? stylesIndex.filtroAtivo
+              : stylesIndex.filtroInativo
           }
           onClick={() => setStatusFiltro(false)}
         >
@@ -105,7 +107,9 @@ function Mesas() {
         </button>
         <button
           className={
-            statusFiltro === true ? styles.filtroAtivo : styles.filtroInativo
+            statusFiltro === true
+              ? stylesIndex.filtroAtivo
+              : stylesIndex.filtroInativo
           }
           onClick={() => setStatusFiltro(true)}
         >
