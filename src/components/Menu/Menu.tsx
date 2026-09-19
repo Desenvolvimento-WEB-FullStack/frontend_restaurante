@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { FaDoorOpen } from "react-icons/fa";
 
 import { getDataLocalStorage } from "../../utils/getDataLocalStorage";
@@ -7,6 +7,13 @@ import styles from "./Menu.module.css";
 const dadosLocalStorage = getDataLocalStorage();
 
 function Menu() {
+  const navigate = useNavigate();
+
+  function logout() {
+    localStorage.removeItem("@dadoslogin");
+    navigate("/");
+  }
+
   return (
     <div className={styles.containerMenu}>
       <div className={styles.contentLeft}>
@@ -26,9 +33,11 @@ function Menu() {
       </div>
 
       <div className={styles.contentRight}>
-        <span>{dadosLocalStorage.role}</span>
+        <span className={styles.roleText}>
+          {dadosLocalStorage.role?.toUpperCase()}
+        </span>
         <span>
-          <FaDoorOpen />
+          <FaDoorOpen onClick={logout} size={24} />
         </span>
       </div>
     </div>

@@ -2,6 +2,9 @@
 
 Definidas em `src/App.tsx` com `react-router` (`<Routes>`/`<Route>`).
 O componente `<Menu>` é exibido em todas as rotas exceto `/` (login).
+Todas as rotas exceto `/` são envolvidas por `RotaPrivada`
+(`src/components/RotaPrivada/RotaPrivada.tsx`), que redireciona para `/`
+quando não há dados de login no `localStorage`.
 
 | Rota | Componente | Arquivo | Descrição |
 |---|---|---|---|

@@ -4,16 +4,31 @@
   flex-wrap: wrap;
   max-width: 1200px;
   margin: 20px auto;
-  padding: 20px;
+  padding-top: 20px;
+
+  justify-content: space-between;
 }
 
 .itemPedido {
   background-color: #fff;
-  width: 350px;
-  border-radius: 16px;
+  width: 48%;
+  border-radius: 24px;
+  height: 200px;
+  overflow: hidden;
 
   display: flex;
   flex-direction: column;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.itemPedidoBody {
+  overflow-y: scroll;
+}
+
+.itemPedidoBody ul {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 @media (max-width: 600px) {
@@ -24,10 +39,9 @@
 
 .itemPedidoHeader {
   display: flex;
-  padding: 10px;
+  padding: 20px;
   justify-content: space-between;
-  background-color: var(--color-text-secondary);
-  color: #fff;
+  background-color: #fbf8f3;
 }
 
 .itemPedidoBody {
@@ -42,5 +56,5 @@
 .itemPedidoFooter {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
+  padding: 20px;
 }
