@@ -29,6 +29,12 @@ function Menu() {
           <Link to="/chefes">
             <li>Chefes</li>
           </Link>
+          <Link to="/mesas/nova">
+            <li>Nova mesa</li>
+          </Link>
+          <Link to="/cardapio/novo">
+            <li>Cardapio</li>
+          </Link>
         </ul>
       </div>
 

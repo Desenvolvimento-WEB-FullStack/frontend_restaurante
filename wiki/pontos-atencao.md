@@ -5,33 +5,35 @@ checklist para próximas mudanças — não são bloqueantes, mas valem correç�
 
 ## Bugs / inconsistências
 
-- **Typo `Bearen` em vez de `Bearer`** no header `Authorization`, presente em
-  quase toda chamada autenticada (`Mesas.tsx`, `Pedidos.tsx`, `Chefs.tsx`,
-  `PedidosItems/Item.tsx`, e no `fecharPedido` de `PedidosItems.tsx`).
-  A única chamada correta (`Bearer`) é `buscarDadosPedidoAtual` em
-  `PedidosItems.tsx:72`. Se a API validar o valor do prefixo, isso pode estar
-  quebrando autenticação nessas chamadas.
+- ~~Typo `Bearen` em vez de `Bearer`~~ Corrigido: a autenticação agora é
+  injetada por um único interceptor em `src/services/api.ts`, com o prefixo
+  `Bearer` correto em todas as chamadas.
 - **Data hardcoded** em `Mesas.tsx` (`criarPedido`): `data: "2026-08-26"` no
   lugar da data atual.
-- **Filtros "Todos/Abertos/Finalizados" em `Pedidos.tsx`** existem na UI mas
-  não têm `onClick`/estado associado — não filtram nada.
-- **Itens do pedido mockados em `Pedidos.tsx`**: a listagem de itens dentro de
-  cada card de pedido é fixa ("2x Coxinha" repetido), não vem de
-  `pedido.items` da API.
-- **`Chefs.tsx` exibe `chef.criado_em` na coluna "Nome"** (`TableCell` da
-  primeira coluna usa `chef.criado_em` em vez de `chef.nome`).
+- ~~Filtros "Todos/Abertos/Finalizados" em `Pedidos.tsx` sem `onClick`~~
+  Corrigido: `Pedidos.tsx` tem `filtroStatus` com `onClick` funcional nos três
+  botões.
+- ~~Itens do pedido mockados em `Pedidos.tsx`~~ Corrigido: a listagem usa
+  `pedido.items` vindo da API.
+- ~~`Chefs.tsx` exibe `chef.criado_em` na coluna "Nome"~~ Corrigido: a coluna
+  usa `chef.nome`.
 - **`somar(num1, num2)` em `Mesas.tsx`** — função de teste/depuração sem
   tipagem, chamada uma vez (`somar(10, 20)`) sem uso do resultado. Parece
-  código esquecido, candidato a remoção.
+  código esquecido, candidato a remoção. *(não reverificado nesta rodada —
+  confirmar antes de remover)*
 - **`generateRandomColor.ts`** não é importado/usado em nenhuma página atual.
-- **`src/services/` está vazia** — não há camada de API centralizada; toda
-  chamada duplica base URL e headers manualmente em cada página.
+  *(não reverificado nesta rodada)*
+- ~~`src/services/` está vazia~~ Corrigido: `src/services/api.ts` centraliza
+  `axios.create` (baseURL via `VITE_URL_API`) + interceptor de
+  `Authorization`; todas as páginas (incluindo a nova `Cardapio.tsx`) usam
+  esse client.
 
 ## Tratamento de erro
 
-- `Login.tsx` acessa `error.response.data.error` sem checar o tipo do erro
-  (axios error) nem fazer fallback — se a request falhar por rede (sem
-  `response`), essa leitura lança exceção não tratada.
+- ~~`Login.tsx` acessa `error.response.data.error` sem checar o tipo do
+  erro~~ Corrigido: agora usa `axios.isAxiosError(error)` antes de ler
+  `error.response?.data?.error`, com `mensagem` podendo ficar `undefined` em
+  vez de lançar exceção.
 - `Mesas.tsx` e `PedidosItems.tsx` (`fecharPedido`) usam `alert(...)` genérico
   em catch, sem mostrar a mensagem real de erro da API (inconsistente com o
   uso de `Swal.fire` no restante do fluxo).
@@ -40,13 +42,13 @@ checklist para próximas mudanças — não são bloqueantes, mas valem correç�
 
 ## Tipagem
 
-- `Pedidos.tsx` usa `useState([])` sem tipo genérico e acessa
-  `pedido.mesa.nome`, `pedido.nome_cliente`, `pedido.fechado`, `pedido.total`
-  sem interface declarada (diferente do padrão tipado usado em
-  `PedidosItems.tsx`/`Mesas.tsx`/`Chefs.tsx`).
-- `Login.tsx` tipa o handler como `React.SubmitEvent` (não existe esse tipo em
-  `@types/react` — o correto seria `React.FormEvent<HTMLFormElement>`); pode
-  estar compilando por `any` implícito ou erro de tipo silenciado.
+- ~~`Pedidos.tsx` usa `useState([])` sem tipo genérico~~ Corrigido: agora usa
+  `useState<Pedido[]>([])` com interfaces `Pedido`/`PedidoItem`/`ItemCardapio`
+  declaradas no arquivo.
+- `Login.tsx` (e as páginas geradas a partir dela, como `Cardapio.tsx`) tipam
+  o handler como `React.SubmitEvent` (não existe esse tipo em `@types/react`
+  — o correto seria `React.FormEvent<HTMLFormElement>`); pode estar
+  compilando por `any` implícito ou erro de tipo silenciado.
 - `.map((mesa) => ...)`/`.map((pedido) => ...)`/`.map((item) => ...)` em
   listas renderizadas sem `key` em alguns pontos (`Pedidos.tsx` item de
   pedido `<div>`, `PedidosItems.tsx` `<li>` do resumo) — React vai reclamar em

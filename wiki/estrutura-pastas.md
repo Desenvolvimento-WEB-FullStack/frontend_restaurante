@@ -13,13 +13,16 @@ restaurante/
 │   │   └── Menu/             # menu de navegação lateral/topo (Mesas/Pedidos/Chefes + logout)
 │   ├── pages/                # uma pasta por rota/tela
 │   │   ├── CadastroMesa/     # formulário de cadastro de mesa
+│   │   ├── Cardapio/         # formulário de cadastro de item do cardápio
 │   │   ├── Chefs/            # quadro de chefs (tabela MUI)
 │   │   ├── Login/            # tela de login
 │   │   ├── Mesas/            # grade de mesas + modal de abertura de pedido
 │   │   ├── Pedidos/          # listagem de pedidos
 │   │   └── PedidosItems/     # detalhe de um pedido: cardápio + resumo do pedido
 │   │       └── Item.tsx      # card de item do cardápio dentro de PedidosItems
-│   ├── services/              # (VAZIA) — reservada para uma camada de API, ainda não implementada
+│   ├── services/
+│   │   └── api.ts             # client axios centralizado (axios.create com baseURL de VITE_URL_API)
+│   │                           # + interceptor que injeta "Authorization: Bearer <token>" em toda requisição
 │   ├── styles/
 │   │   └── reset.css          # reset global de CSS
 │   ├── utils/

@@ -1,0 +1,51 @@
+.container {
+  background: #fff;
+
+  max-width: 400px;
+  border-radius: 16px;
+  margin: 40px auto;
+
+  padding: 40px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 15px;
+}
+
+.containerCheckbox {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.containerCheckbox label {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  color: #7b6e62;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.buttonCadastrar {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  background-color: #8f4219;
+  height: 38px;
+  border-radius: 12px;
+  color: #fff;
+  border: 1px solid #8f4219;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: transform 0.1s ease, background-color 0.1s ease;
+}
+
+.buttonCadastrar:active {
+  transform: scale(0.96);
+  background-color: #723416;
+}

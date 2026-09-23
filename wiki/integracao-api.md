@@ -1,22 +1,24 @@
 # Integração com a API
 
-Base URL hardcoded em cada chamada (sem `.env`/variável de ambiente):
-`http://localhost:8888`
+Base URL vem da env var `VITE_URL_API` (definida em `.env.local`, ex.:
+`https://api2.sistemadigitais.com.br`), usada em `axios.create({ baseURL: ... })`
+dentro do client centralizado `src/services/api.ts`.
 
-Não existe client axios centralizado (`axios.create`) — cada página importa
-`axios` diretamente e monta a URL completa e os headers manualmente.
+Todas as páginas importam esse `api` (não `axios` diretamente) e chamam só o
+path relativo, ex.: `api.post("mesas", {...})`.
 
 ## Autenticação
 
-Header enviado manualmente em cada requisição autenticada:
+Injetada automaticamente por um interceptor de request em `src/services/api.ts`:
 
 ```ts
-headers: { Authorization: `Bearen ${dadosLocalStorage.token}` }
+config.headers.Authorization = `Bearer ${dados.token}`;
 ```
 
-`dadosLocalStorage` vem de `getDataLocalStorage()`, lido de
-`localStorage["@dadoslogin"]` (setado no login). Ver nota sobre o typo
-`Bearen` em [pontos-atencao.md](./pontos-atencao.md).
+`dados` vem do parse de `localStorage["@dadoslogin"]` (setado no login). O
+typo `Bearen` que existia em versões anteriores (chamadas manuais por página)
+foi eliminado com a centralização nesse client — ver
+[pontos-atencao.md](./pontos-atencao.md).
 
 ## Endpoints consumidos
 
@@ -28,9 +30,10 @@ headers: { Authorization: `Bearen ${dadosLocalStorage.token}` }
 | `POST` | `/pedidos` | `Mesas.tsx` | sim | Body `{ mesa_id, nome_cliente, data }`. **`data` é fixa em `"2026-08-26"`** (hardcoded, não usa a data atual). Retorna o pedido criado (`id` usado para navegar). |
 | `GET` | `/pedidos/:id` | `PedidosItems.tsx` | sim | Retorna `DadosPedido` (inclui `mesa`, `items[]`, `subTotal`). |
 | `GET` | `/items-cardapio` | `PedidosItems.tsx` | sim | Retorna `ItemCardapio[]`. |
+| `POST` | `/items-cardapio` | `Cardapio.tsx` | sim | Body `{ nome, preco, tipo, porcoes, tamanho, vegetariano, descricao }`. Cadastra um novo item do cardápio; não navega, apenas limpa o formulário no sucesso. |
 | `PUT` | `/pedidos/:id/fechar` | `PedidosItems.tsx` | sim | Body vazio `{}`. Fecha o pedido. |
 | `POST` | `/items-pedidos` | `PedidosItems/Item.tsx` | sim | Body `{ pedido_id, quantidade, item_cardapio_id }`. Adiciona item ao pedido; após sucesso reseta quantidade e chama `refresh()` (recarrega `/pedidos/:id`). |
-| `GET` | `/pedidos` | `Pedidos.tsx` | sim | Retorna lista de pedidos com `mesa`, `nome_cliente`, `fechado`, `total`. |
+| `GET` | `/pedidos` | `Pedidos.tsx` | sim | Retorna lista de pedidos com `mesa`, `nome_cliente`, `fechado`, `items[]`, `total`. |
 | `GET` | `/chefs` | `Chefs.tsx` | sim | Retorna `Chef[]` (`nome`, `especializacao`, `faz_sobremesa`). |
 
 ## Tipos de domínio (declarados localmente, não compartilhados)
