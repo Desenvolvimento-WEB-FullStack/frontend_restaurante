@@ -13,6 +13,8 @@ import api from "../../services/api";
 
 import styles from "./Mesas.module.css";
 import stylesIndex from "../../index.module.css";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 type Mesa = {
   id: number;
@@ -53,8 +55,20 @@ function Mesas() {
       });
 
       navigate(`/pedido-items/${response.data.id}`);
-    } catch {
-      alert("Erro ao criar pedido");
+    } catch (error) {
+      setModalAberto(false);
+      setNomeCliente("");
+
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.error
+        : undefined;
+
+      await Swal.fire({
+        title: message,
+        confirmButtonText: "Ok",
+      });
+
+      buscarMesas();
     }
   }
 
@@ -70,6 +84,10 @@ function Mesas() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     buscarMesas();
+    const TWO_MINUTES = 120000;
+    const intervalo = setInterval(buscarMesas, TWO_MINUTES); // Atualiza a lista de mesas a cada 2 minutos
+
+    return () => clearInterval(intervalo);
   }, []); // Deve executar durante a renderização inicial da tela
 
   const mesasFiltradas =
