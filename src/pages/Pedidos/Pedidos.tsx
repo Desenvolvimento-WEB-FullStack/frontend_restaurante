@@ -7,6 +7,7 @@ import api from "../../services/api";
 
 import globalStyles from "../../index.module.css";
 import styles from "./Pedidos.module.css";
+import formatDate from "../../utils/formatDate";
 
 type ItemCardapio = {
   id: number;
@@ -24,6 +25,7 @@ type Pedido = {
   nome_cliente: string;
   fechado: boolean;
   total: number | null;
+  data: string;
   mesa: {
     nome: string;
   };
@@ -83,7 +85,7 @@ function Pedidos() {
             </div>
 
             <div className={styles.itemPedidoFooter}>
-              <span>18:00</span>
+              <span>{formatDate(pedido.data)}</span>
               <span>Total: {formatMoney(Number(pedido.total))}</span>
             </div>
           </div>

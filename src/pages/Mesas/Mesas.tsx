@@ -33,7 +33,9 @@ function Mesas() {
   const [modalAberto, setModalAberto] = useState(false);
   const [mesas, setMesas] = useState<Mesa[]>([]);
   const [mesaClicada, setMesaClicada] = useState<Mesa | null>(null);
+
   const [nomeCliente, setNomeCliente] = useState("");
+  const [dataPedido, setDataPedido] = useState("");
 
   function abrirModal(mesa: Mesa) {
     setModalAberto(true);
@@ -51,7 +53,7 @@ function Mesas() {
       const response = await api.post("pedidos", {
         mesa_id: mesaClicada?.id,
         nome_cliente: nomeCliente,
-        data: "2026-08-26",
+        data: dataPedido,
       });
 
       navigate(`/pedido-items/${response.data.id}`);
@@ -171,6 +173,16 @@ function Mesas() {
               <input
                 value={nomeCliente}
                 onChange={(e) => setNomeCliente(e.target.value)}
+                required
+              />
+            </div>
+            {dataPedido}
+            <div className={stylesIndex.containerInput}>
+              <label>Data do pedido</label>
+              <input
+                type="date"
+                value={dataPedido}
+                onChange={(e) => setDataPedido(e.target.value)}
                 required
               />
             </div>
