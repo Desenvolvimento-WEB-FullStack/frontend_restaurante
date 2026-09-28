@@ -13,6 +13,7 @@ restaurante/
 │   │   └── Menu/             # menu de navegação lateral/topo (Mesas/Pedidos/Chefes + logout)
 │   ├── pages/                # uma pasta por rota/tela
 │   │   ├── CadastroMesa/     # formulário de cadastro de mesa
+│   │   ├── CadastroUsuario/  # formulário de cadastro de usuário (nome/email/senha/role)
 │   │   ├── Cardapio/         # formulário de cadastro de item do cardápio
 │   │   ├── Chefs/            # quadro de chefs (tabela MUI)
 │   │   ├── Login/            # tela de login

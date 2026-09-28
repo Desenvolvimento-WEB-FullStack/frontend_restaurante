@@ -25,9 +25,9 @@ foi eliminado com a centralização nesse client — ver
 | Método | Endpoint | Usado em | Auth | Observações |
 |---|---|---|---|---|
 | `POST` | `/auth/login` | `Login.tsx` | não | Body `{ email, senha }`. Resposta salva inteira em `localStorage["@dadoslogin"]`. |
-| `GET` | `/mesas` | `Mesas.tsx` | sim | Retorna `Mesa[]`. Chamada na montagem da tela e repetida via polling a cada 10 segundos (`setInterval`, limpo no unmount). |
+| `GET` | `/mesas` | `Mesas.tsx` | sim | Retorna `Mesa[]`. Chamada na montagem da tela e repetida via polling a cada 2 minutos (`setInterval`, limpo no unmount). |
 | `POST` | `/mesas` | `CadastroMesa.tsx` | sim | Body `{ nome, quantidade_lugares }`. Cadastra uma nova mesa. |
-| `POST` | `/pedidos` | `Mesas.tsx` | sim | Body `{ mesa_id, nome_cliente, data }`. **`data` é fixa em `"2026-08-26"`** (hardcoded, não usa a data atual). Retorna o pedido criado (`id` usado para navegar). |
+| `POST` | `/pedidos` | `Mesas.tsx` | sim | Body `{ mesa_id, nome_cliente, data }`, `data` vindo de um `<input type="date">` no modal. Retorna o pedido criado (`id` usado para navegar); erro trata com `Swal.fire` e recarrega `/mesas`. |
 | `GET` | `/pedidos/:id` | `PedidosItems.tsx` | sim | Retorna `DadosPedido` (inclui `mesa`, `items[]`, `subTotal`). |
 | `GET` | `/items-cardapio` | `PedidosItems.tsx` | sim | Retorna `ItemCardapio[]`. |
 | `POST` | `/items-cardapio` | `Cardapio.tsx` | sim | Body `{ nome, preco, tipo, porcoes, tamanho, vegetariano, descricao }`. Cadastra um novo item do cardápio; não navega, apenas limpa o formulário no sucesso. |
@@ -35,6 +35,7 @@ foi eliminado com a centralização nesse client — ver
 | `POST` | `/items-pedidos` | `PedidosItems/Item.tsx` | sim | Body `{ pedido_id, quantidade, item_cardapio_id }`. Adiciona item ao pedido; após sucesso reseta quantidade e chama `refresh()` (recarrega `/pedidos/:id`). |
 | `GET` | `/pedidos` | `Pedidos.tsx` | sim | Retorna lista de pedidos com `mesa`, `nome_cliente`, `fechado`, `items[]`, `total`. |
 | `GET` | `/chefs` | `Chefs.tsx` | sim | Retorna `Chef[]` (`nome`, `especializacao`, `faz_sobremesa`). |
+| `POST` | `/auth/usuarios` | `CadastroUsuario.tsx` | sim | Body `{ nome, email, senha, role }`, `role` é um select com `admin`/`chef`/`gerente`/`garcom`. Cadastra um novo usuário; não navega, apenas limpa o formulário no sucesso. |
 
 ## Tipos de domínio (declarados localmente, não compartilhados)
 

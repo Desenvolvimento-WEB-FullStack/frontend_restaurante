@@ -8,8 +8,8 @@ checklist para próximas mudanças — não são bloqueantes, mas valem correç�
 - ~~Typo `Bearen` em vez de `Bearer`~~ Corrigido: a autenticação agora é
   injetada por um único interceptor em `src/services/api.ts`, com o prefixo
   `Bearer` correto em todas as chamadas.
-- **Data hardcoded** em `Mesas.tsx` (`criarPedido`): `data: "2026-08-26"` no
-  lugar da data atual.
+- ~~Data hardcoded em `Mesas.tsx` (`criarPedido`)~~ Corrigido: a data agora
+  vem de um `<input type="date">` no modal de criação de pedido.
 - ~~Filtros "Todos/Abertos/Finalizados" em `Pedidos.tsx` sem `onClick`~~
   Corrigido: `Pedidos.tsx` tem `filtroStatus` com `onClick` funcional nos três
   botões.
@@ -34,9 +34,11 @@ checklist para próximas mudanças — não são bloqueantes, mas valem correç�
   erro~~ Corrigido: agora usa `axios.isAxiosError(error)` antes de ler
   `error.response?.data?.error`, com `mensagem` podendo ficar `undefined` em
   vez de lançar exceção.
-- `Mesas.tsx` e `PedidosItems.tsx` (`fecharPedido`) usam `alert(...)` genérico
-  em catch, sem mostrar a mensagem real de erro da API (inconsistente com o
-  uso de `Swal.fire` no restante do fluxo).
+- `PedidosItems.tsx` (`fecharPedido`) usa `alert(...)` genérico em catch, sem
+  mostrar a mensagem real de erro da API (inconsistente com o uso de
+  `Swal.fire` no restante do fluxo). ~~`Mesas.tsx` também tinha esse
+  problema~~ Corrigido: `criarPedido` agora trata o erro com
+  `axios.isAxiosError` + `Swal.fire` e recarrega a lista de mesas.
 - Nenhuma página trata estado de loading nas listagens (`Mesas`, `Pedidos`,
   `PedidosItems`, `Chefs`) — `Loading` só é usado no botão de login.
 
