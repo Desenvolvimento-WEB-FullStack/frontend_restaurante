@@ -13,7 +13,7 @@
   background-color: #fff;
   width: 48%;
   border-radius: 24px;
-  height: 200px;
+  min-height: 200px;
   overflow: hidden;
 
   display: flex;
@@ -57,4 +57,16 @@
   display: flex;
   justify-content: space-between;
   padding: 20px;
+}
+
+.itemPedidoComprovante {
+  padding: 0 20px 20px;
+}
+
+.comprovante {
+  display: block;
+  width: 100%;
+  max-height: 250px;
+  object-fit: contain;
+  border-radius: 12px;
 }

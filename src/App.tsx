@@ -7,6 +7,8 @@ import CadastroMesa from "./pages/CadastroMesa/CadastroMesa";
 import PedidosItems from "./pages/PedidosItems/PedidosItems";
 import Pedidos from "./pages/Pedidos/Pedidos";
 import Chefs from "./pages/Chefs/Chefs";
+import Cardapio from "./pages/Cardapio/Cardapio";
+import CadastroUsuario from "./pages/CadastroUsuario/CadastroUsuario";
 
 // const telasNaoMenu = ["/", "/fale-conosco"];
 
@@ -56,6 +58,22 @@ function App() {
           element={
             <RotaPrivada>
               <Chefs />
+            </RotaPrivada>
+          }
+        />
+        <Route
+          path="/cardapio/novo"
+          element={
+            <RotaPrivada>
+              <Cardapio />
+            </RotaPrivada>
+          }
+        />
+        <Route
+          path="/usuarios/novo"
+          element={
+            <RotaPrivada>
+              <CadastroUsuario />
             </RotaPrivada>
           }
         />

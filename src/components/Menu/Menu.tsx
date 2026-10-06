@@ -20,15 +20,41 @@ function Menu() {
         <span className={styles.logoMenu}>🍽️</span>
         <h1>Sabor & Arte</h1>
         <ul>
-          <Link to="/mesas">
-            <li>Mesas</li>
-          </Link>
-          <Link to="/pedidos">
-            <li>Pedidos</li>
-          </Link>
-          <Link to="/chefes">
-            <li>Chefes</li>
-          </Link>
+          {["ADMIN", "GARCOM"].includes(
+            dadosLocalStorage.role?.toUpperCase(),
+          ) && (
+            <Link to="/mesas">
+              <li>Mesas</li>
+            </Link>
+          )}
+
+          {["CHEF", "ADMIN", "GARCOM"].includes(
+            dadosLocalStorage.role?.toUpperCase(),
+          ) && (
+            <Link to="/pedidos">
+              <li>Pedidos</li>
+            </Link>
+          )}
+
+          {["ADMIN"].includes(dadosLocalStorage.role?.toUpperCase()) && (
+            <Link to="/chefes">
+              <li>Chefes</li>
+            </Link>
+          )}
+
+          {["ADMIN"].includes(dadosLocalStorage.role?.toUpperCase()) && (
+            <Link to="/mesas/nova">
+              <li>Nova mesa</li>
+            </Link>
+          )}
+
+          {["ADMIN", "GERENTE"].includes(
+            dadosLocalStorage.role?.toUpperCase(),
+          ) && (
+            <Link to="/cardapio/novo">
+              <li>Cardapio</li>
+            </Link>
+          )}
         </ul>
       </div>
 

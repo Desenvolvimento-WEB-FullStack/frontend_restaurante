@@ -28,15 +28,18 @@ Gerenciador de pacotes: `yarn` (campo `packageManager` fixado).
 
 ## Backend
 
-Não há backend neste repositório. O front consome uma API REST em
-`http://localhost:8888` (hardcoded em cada chamada axios — ver
-[integracao-api.md](./integracao-api.md)). Presume-se um projeto separado
-rodando localmente nessa porta durante o desenvolvimento.
+Não há backend neste repositório. O front consome uma API REST cuja URL base
+vem da env var `VITE_URL_API` (definida em `.env.local`), usada em
+`axios.create` dentro de `src/services/api.ts` — ver
+[integracao-api.md](./integracao-api.md).
 
 ## Autenticação
 
 Não há contexto/estado global de autenticação (sem Context API, Redux, Zustand
-etc.). O padrão em todas as páginas protegidas é:
+etc.). Todas as páginas usam o client centralizado `src/services/api.ts`, que
+tem um interceptor de request injetando automaticamente
+`Authorization: Bearer <token>` a partir do `localStorage`. Além disso, o
+padrão em todas as páginas protegidas é:
 
 ```ts
 const dadosLocalStorage = getDataLocalStorage(); // lido no escopo do módulo, fora do componente
@@ -60,7 +63,8 @@ token.
   `DadosPedido`) são declarados localmente em cada arquivo que os usa — não há
   uma pasta `types/` compartilhada nem geração de tipos a partir da API.
 - Sem estado global/gerenciador de estado: cada página busca seus próprios
-  dados via `useEffect` + `axios` diretamente no componente.
-- Sem camada de serviço/API centralizada: `src/services/` existe mas está
-  vazia; toda chamada usa `axios` diretamente na página, repetindo a URL base
-  e o header de `Authorization`.
+  dados via `useEffect` + o client `api` (`src/services/api.ts`) diretamente
+  no componente.
+- Camada de serviço centralizada em `src/services/api.ts` (`axios.create` +
+  interceptor de `Authorization`); cada página importa esse client e chama só
+  o path relativo (ex.: `api.post("mesas", {...})`).

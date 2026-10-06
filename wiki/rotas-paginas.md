@@ -9,11 +9,13 @@ quando não há dados de login no `localStorage`.
 | Rota | Componente | Arquivo | Descrição |
 |---|---|---|---|
 | `/` | `Login` | `src/pages/Login/Login.tsx` | Formulário de e-mail/senha. `POST /auth/login`, salva resposta em `localStorage["@dadoslogin"]`, navega para `/mesas`. |
-| `/mesas` | `Mesas` | `src/pages/Mesas/Mesas.tsx` | Lista mesas (`GET /mesas`) em grade. Clicar numa mesa livre abre modal MUI para informar nome do cliente e criar pedido (`POST /pedidos`); clicar numa mesa com `pedido_atual_id` navega direto para `/pedido-items/:id`. |
+| `/mesas` | `Mesas` | `src/pages/Mesas/Mesas.tsx` | Lista mesas (`GET /mesas`) em grade, com polling a cada 2 minutos (`setInterval`) para manter o status atualizado. Clicar numa mesa livre abre modal MUI para informar nome do cliente e data do pedido e criar pedido (`POST /pedidos`); clicar numa mesa com `pedido_atual_id` navega direto para `/pedido-items/:id`. |
 | `/mesas/nova` | `CadastroMesa` | `src/pages/CadastroMesa/CadastroMesa.tsx` | Formulário de cadastro de mesa (`nome`, `quantidade_lugares`). `POST /mesas`, navega para `/mesas` no sucesso. |
 | `/pedido-items/:id` | `PedidosItems` | `src/pages/PedidosItems/PedidosItems.tsx` | Tela principal de montagem do pedido: lista o cardápio (`GET /items-cardapio`) à esquerda e o resumo do pedido atual (`GET /pedidos/:id`) à direita. Botão "Fechar pedido" chama `PUT /pedidos/:id/fechar` (com confirmação via SweetAlert2) e volta para `/mesas`. Cada item do cardápio é renderizado por `Item` (`src/pages/PedidosItems/Item.tsx`), que controla sua própria quantidade e faz `POST /items-pedidos` ao clicar em "Adicionar". |
-| `/pedidos` | `Pedidos` | `src/pages/Pedidos/Pedidos.tsx` | Lista todos os pedidos (`GET /pedidos`) com nome da mesa, cliente, status (aberto/fechado) e total. Botões "Todos/Abertos/Finalizados" existem na UI mas **sem filtro implementado**. Os itens do pedido exibidos na listagem são mockados/fixos ("2x Coxinha"), não vêm da API. |
+| `/pedidos` | `Pedidos` | `src/pages/Pedidos/Pedidos.tsx` | Lista todos os pedidos (`GET /pedidos`) com nome da mesa, cliente, status (aberto/fechado), itens (`pedido.items`) e total. Botões "Todos/Abertos/Finalizados" filtram por `fechado`. |
 | `/chefes` | `Chefs` | `src/pages/Chefs/Chefs.tsx` | Tabela MUI com chefs (`GET /chefs`): nome/especialização/faz sobremesa. |
+| `/cardapio/novo` | `Cardapio` | `src/pages/Cardapio/Cardapio.tsx` | Formulário de cadastro de item do cardápio (`nome`, `preco`, `tipo`, `porcoes`, `tamanho`, `vegetariano`, `descricao`). `POST /items-cardapio`; no sucesso apenas limpa o formulário (sem navegação). |
+| `/usuarios/novo` | `CadastroUsuario` | `src/pages/CadastroUsuario/CadastroUsuario.tsx` | Formulário de cadastro de usuário (`nome`, `email`, `senha`, `role` — select com `admin`/`chef`/`gerente`/`garcom`). `POST /auth/usuarios`; no sucesso apenas limpa o formulário (sem navegação). |
 
 ## Fluxo principal do usuário
 

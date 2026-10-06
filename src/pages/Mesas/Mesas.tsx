@@ -13,6 +13,8 @@ import api from "../../services/api";
 
 import styles from "./Mesas.module.css";
 import stylesIndex from "../../index.module.css";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 type Mesa = {
   id: number;
@@ -31,7 +33,9 @@ function Mesas() {
   const [modalAberto, setModalAberto] = useState(false);
   const [mesas, setMesas] = useState<Mesa[]>([]);
   const [mesaClicada, setMesaClicada] = useState<Mesa | null>(null);
+
   const [nomeCliente, setNomeCliente] = useState("");
+  const [dataPedido, setDataPedido] = useState("");
 
   function abrirModal(mesa: Mesa) {
     setModalAberto(true);
@@ -49,12 +53,24 @@ function Mesas() {
       const response = await api.post("pedidos", {
         mesa_id: mesaClicada?.id,
         nome_cliente: nomeCliente,
-        data: "2026-08-26",
+        data: dataPedido,
       });
 
       navigate(`/pedido-items/${response.data.id}`);
-    } catch {
-      alert("Erro ao criar pedido");
+    } catch (error) {
+      setModalAberto(false);
+      setNomeCliente("");
+
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.error
+        : undefined;
+
+      await Swal.fire({
+        title: message,
+        confirmButtonText: "Ok",
+      });
+
+      buscarMesas();
     }
   }
 
@@ -70,6 +86,10 @@ function Mesas() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     buscarMesas();
+    const TWO_MINUTES = 120000;
+    const intervalo = setInterval(buscarMesas, TWO_MINUTES); // Atualiza a lista de mesas a cada 2 minutos
+
+    return () => clearInterval(intervalo);
   }, []); // Deve executar durante a renderização inicial da tela
 
   const mesasFiltradas =
@@ -153,6 +173,16 @@ function Mesas() {
               <input
                 value={nomeCliente}
                 onChange={(e) => setNomeCliente(e.target.value)}
+                required
+              />
+            </div>
+            {dataPedido}
+            <div className={stylesIndex.containerInput}>
+              <label>Data do pedido</label>
+              <input
+                type="date"
+                value={dataPedido}
+                onChange={(e) => setDataPedido(e.target.value)}
                 required
               />
             </div>
