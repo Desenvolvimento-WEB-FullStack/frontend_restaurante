@@ -1,10 +1,11 @@
+# copiar para frontend_restaurante/.dockerignore
 node_modules
 dist
 .git
+.env
 .vscode
 .claude
 wiki
-*.local
 *.log
-Dockerfile
+Dockerfile*
 .dockerignore
